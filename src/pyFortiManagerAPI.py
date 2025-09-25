@@ -129,7 +129,7 @@ class FortiManager:
         get_adoms = session.post(url=self.base_url, json=payload, verify=self.verify)
         return get_adoms.json()["result"]
 
-    def __lock_unlock_adom(self, method, name=False):
+    def __lock_unlock_save_adom(self, method, name=False):
         """
         Lock or Unlock current Adom in FortiManager 
         Adom has to be in workspace mode
@@ -158,10 +158,13 @@ class FortiManager:
         return self.custom_api(payload)
 
     def lock_adom(self, name=False):
-        return self.__lock_unlock_adom("lock", name)
+        return self.__lock_unlock_save_adom("lock", name)
 
     def unlock_adom(self, name=False):
-        return self.__lock_unlock_adom("unlock", name)
+        return self.__lock_unlock_save_adom("unlock", name)
+
+    def save_adom(self, name=False):
+        return self.__lock_unlock_save_adom("commit", name)
 
     def get_devices(self):
         """
