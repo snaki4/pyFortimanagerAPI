@@ -1792,3 +1792,37 @@ class FortiManager:
                    }
         get_dhcp_server = session.post(url=self.base_url, json=payload, verify=self.verify)
         return get_dhcp_server.json()["result"]
+
+    def add_firewall_service_object(self, name):
+        """
+        Create a service object using provided info
+        :param name: Enter object name that is to be created
+        """
+        session = self.login()
+        return False
+
+     def add_firewall_service_object(self, name, tcp_portrange: list, udp_portrange: list, protocol=5, session_ttl=0):
+         """
+         Create a service object using provided info
+         :param name: Enter object name that is to be created
+         :param tcp_portrange: list of tcp port or tcp port ranges
+         :param udp_portrange list of udp port or tcp port ranges
+         :param protocol: protocol id
+         :param session_ttl: session ttl value
+         """
+         session = self.login()
+         payload = {
+                 "method": "add",
+                 "params": [{"data": {
+                     "name" : name,
+                     "protocol" : protocol,
+                     #"session-ttl": session_ttl,
+                     "tcp-portrange" : tcp_portrange,
+                     "udp-portrange" : udp_portrange},
+                     "url": f"pm/config/adom/{self.adom}/obj/firewall/service/custom"}],
+                  "session": self.sessionid}
+
+         add_service_object = session.post(
+                 url=self.base_url, json=payload, verify=self.verify)
+
+         return add_service_object.json()["result"]
